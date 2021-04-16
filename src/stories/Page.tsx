@@ -16,7 +16,7 @@ export const Page: React.FC<PageProps> = ({ user, onLogin, onLogout, onCreateAcc
 
     <section>
       <h2>Home Page</h2>
-      <p>This is the homepage</p>
+      <p>This is the change from task/update-homepage branch</p>
     </section>
   </article>
 );
