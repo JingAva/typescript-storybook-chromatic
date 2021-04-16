@@ -1,22 +1,28 @@
 # .github/workflows/chromatic.yml
 
-# Other configuration required
+# Other necessary configuration for the action
 
 jobs:
   chromatic-deployment:
     steps:
-      # 👇 Version 2 of the action
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # 👈 Required to retrieve git history
-      - name: Install dependencies
-        run: yarn
-        # 👇 Adds Chromatic as a step in the workflow
+      # Other steps
+
+      # 👇 Checks if the branch is not main and runs Chromatic
       - name: Publish to Chromatic
+        if: github.ref != 'refs/heads/main'
         uses: chromaui/action@v1
-        # Options required to the GitHub Chromatic Action
+        # Required options for the Chromatic GitHub Action
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           # 👇 Chromatic projectToken, refer to the manage page to obtain it.
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        # 👇 Checks if the branch is main and accepts all changes in Chromatic
+      - name: Publish to Chromatic and auto accept changes
+        if: github.ref == 'refs/heads/main'
+        uses: chromaui/action@v1
+        # Required options for the Chromatic GitHub Action
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # 👇 Chromatic projectToken, refer to the manage page to obtain it.
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          autoAcceptChanges: true # 👈 Option to accept all changes
